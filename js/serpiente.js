@@ -2,8 +2,11 @@ var pixelSize = 20;
 var fieldSize = 25;
 
 var canvas = document.getElementById('gameCanvas');
+canvas.removeAttribute('width');
+canvas.removeAttribute('heihgt');
 canvas.width = pixelSize * fieldSize;
 canvas.height = pixelSize * fieldSize;
+
 
 var ctx = canvas.getContext('2d');
 
