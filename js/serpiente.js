@@ -30,7 +30,20 @@ function Initialize() {
     if (typeof gameLoop != "undefined") {
         clearInterval(gameLoop);
     }
-    addEventListener('keydown', keyDownHandler, false);
+    
+    canvas.addEventListener("focusin", OnCanvasGetFocus, false);
+    canvas.addEventListener("focusout", OnCanvasLoseFocus, false);
+    
+    addEventListener('click', function(e) {
+        console.log(e.target.tagName);
+        if (e.target.tagName == "CANVAS") {
+            addEventListener('keydown', keyDownHandler, false);
+        }
+        else {
+            removeEventListener('keydown', keyDownHandler, false);
+        }
+    }, false);
+     
     points = 0;
     gameOver = false;
 
@@ -42,6 +55,18 @@ function Initialize() {
         gameLoop = setInterval(updateGame, updateRatio);
     }
 }
+
+function OnCanvasGetFocus() {
+    console.log('canvas get focus');
+    addEventListener('keydown', keyDownHandler, false);
+}
+
+
+function OnCanvasLoseFocus() {
+    console.log('canvas lose focus');
+    removeEventListener('keydown', keyDownHandler, false);
+}
+
 
 function createSnake() {
     snake = [];
@@ -109,6 +134,7 @@ function update() {
 // the player can play with arrow keys or A, W, D, S
 function keyDownHandler(event) {
     if (event) {
+         event.preventDefault();
         if (!gameOver) {
             if (isFirstStart) {
                 isFirstStart = false;
@@ -124,6 +150,7 @@ function keyDownHandler(event) {
                 } else if ((event.key == "a" || event.key == "ArrowLeft") && direction != "right") {
                     direction = "left";
                 }
+               
             }
         }
         else {
